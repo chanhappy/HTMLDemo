@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>send</title>
+</head>
+
+<body>
+    <button onclick="onBtnClick()">发送</button>
+</body>
+<script>
+    function onBtnClick() {
+        console.log('button clicked');
+        let sendCast = new BroadcastChannel("Test");
+        sendCast.postMessage({ 'test1': '111' });
+        sendCast.postMessage({ 'test2': '222' });
+    }
+
+    function sendMessage(channelName, message) {
+        let sendCast = new BroadcastChannel(channelName);
+        console.log('[broad-cast-channel:sendMessage]message:', message);
+        console.log('[broad-cast-channel:sendMessage]已经发送');
+    }
+
+    function addEventListener(channelName, cb) {
+        let getCast = new BroadcastChannel(channelName);
+        getCast.onmessage = function (event) {
+            if (event) {
+                cb(event);
+            }
+        };
+    }
+
+    function closeBroadcast(channelName) {
+        let getCast = new BroadcastChannel(channelName);
+        getCast.close();
+    }
+</script>
+
+</html>
